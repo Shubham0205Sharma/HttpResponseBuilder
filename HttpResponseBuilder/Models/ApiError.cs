@@ -1,5 +1,8 @@
 ﻿namespace HttpResponseBuilder.Models
 {
+    /// <summary>
+    /// Api Error Object to capture api errors.
+    /// </summary>
     public class ApiError
     {
         public int Code { get; set; }

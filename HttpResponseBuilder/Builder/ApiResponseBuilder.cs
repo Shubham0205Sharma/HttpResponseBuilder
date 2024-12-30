@@ -3,12 +3,21 @@ using System.Reflection;
 
 namespace HttpResponseBuilder.Builder
 {
+    /// <summary>
+    /// ApiResponseBuilder class is meant to validate your statuscode and return appropriate StatusCodeResult for action methods.
+    /// </summary>
     public class ApiResponseBuilder
     {
-        // Method to validate and return appropriate IActionResult
+        /// <summary>
+        /// Method to validate and return appropriate IActionResult
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="response"></param>
+        /// <param name="statusCodeProperty"></param>
+        /// <returns>Returns IActionResult</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static IActionResult ValidateAndReturn<T>(
             T response,
-            int? expectedStatusCode = null,
             string statusCodeProperty = "StatusCode")
         {
             if (response == null)
@@ -17,18 +26,18 @@ namespace HttpResponseBuilder.Builder
             // Check the statusCodeProperty using reflection if necessary
             var actualStatusCode = GetStatusCode(response, statusCodeProperty);
 
-            // If an expected status code is provided, validate it
-            if (expectedStatusCode.HasValue && actualStatusCode != expectedStatusCode.Value)
-            {
-                throw new InvalidOperationException(
-                    $"Expected status code {expectedStatusCode} but received {actualStatusCode}.");
-            }
-
             // Return the appropriate IActionResult based on the status code
             return GetActionResultForStatusCode(actualStatusCode, response);
         }
 
-        // Overload method that directly accepts a status code
+        /// <summary>
+        /// Overload method that directly accepts a status code
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="response"></param>
+        /// <param name="statusCode"></param>
+        /// <returns>Returns IActionResult</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static IActionResult ValidateAndReturn<T>(
             T response,
             int statusCode)
@@ -39,7 +48,14 @@ namespace HttpResponseBuilder.Builder
             return GetActionResultForStatusCode(statusCode, response);
         }
 
-        // Helper method to extract status code from response model using reflection
+        /// <summary>
+        /// Helper method to extract status code from response model using reflection
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="response"></param>
+        /// <param name="statusCodeProperty"></param>
+        /// <returns>StatusCode Value of type Integer</returns>
+        /// <exception cref="ArgumentException"></exception>
         private static int GetStatusCode<T>(T response, string statusCodeProperty)
         {
             var property = typeof(T).GetProperty(statusCodeProperty, BindingFlags.Public | BindingFlags.Instance);
@@ -49,7 +65,13 @@ namespace HttpResponseBuilder.Builder
             return (int)property.GetValue(response);
         }
 
-        // Helper method to return IActionResult based on the status code
+        /// <summary>
+        /// Helper method to return IActionResult based on the status code
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="statusCode"></param>
+        /// <param name="response"></param>
+        /// <returns>Returns IActionResult</returns>
         private static IActionResult GetActionResultForStatusCode<T>(int statusCode, T response)
         {
             // Specific status code cases first
@@ -66,8 +88,6 @@ namespace HttpResponseBuilder.Builder
                 401 => new UnauthorizedObjectResult(response),  // Unauthorized (401)
                 403 => new ForbidResult(),  // Forbidden (403)
                 404 => new NotFoundObjectResult(response),  // Not Found (404)
-                500 => new ObjectResult(response) { StatusCode = 500 },  // Internal Server Error (500)
-
                 // Default case for other status codes
                 _ => new ObjectResult(response) { StatusCode = statusCode },  // Other status codes
             };

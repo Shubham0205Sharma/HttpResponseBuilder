@@ -2,6 +2,10 @@
 
 namespace HttpResponseBuilder.Models
 {
+    /// <summary>
+    /// Generic Api Response model to hold response data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ApiResponse<T>
     {
         public bool IsSuccess { get; set; } // Indicates whether the operation was successful
@@ -19,7 +23,10 @@ namespace HttpResponseBuilder.Models
             };
         }
 
-        // EnsureSuccessStatusCode Method
+        /// <summary>
+        /// Validate success status code and throw exception for failed statuscode
+        /// </summary>
+        /// <exception cref="FailedResponseException"></exception>
         public void EnsureSuccessStatusCode()
         {
             if (!IsSuccess || StatusCode < 200 || StatusCode >= 400)

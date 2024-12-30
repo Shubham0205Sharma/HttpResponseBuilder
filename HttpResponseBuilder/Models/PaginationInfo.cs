@@ -1,5 +1,8 @@
 ﻿namespace HttpResponseBuilder.Models
 {
+    /// <summary>
+    /// Class to hold pagination data.
+    /// </summary>
     public class PaginationInfo
     {
         public int CurrentPage { get; set; }
