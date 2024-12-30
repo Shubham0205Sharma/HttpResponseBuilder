@@ -9,11 +9,11 @@
 	  <Version>1.0.0</Version>
 	  <Authors>Shubham Kumar Sharma</Authors>
 	  <Company>DotNetFusion</Company>
-	  <Description>Generic API Response model with built in response Builder for handling status codes and response validation in ASP.NET Core.</Description>
+	  <Description>Generic API Response Builder for common response schema, handling status codes results and response validation in ASP.NET Core.</Description>
 	  <PackageTags>ApiResponse, Builder, HttpResponse, Validation, Response, HttpResponseBuilder, Http</PackageTags>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <RepositoryUrl>https://github.com/Shubham0205Sharma/HttpResponseBuilder</RepositoryUrl>
-	  <PackageProjectUrl>https://github.com/YourGitHubRepo/HttpResponseBuilder</PackageProjectUrl>
+	  <PackageProjectUrl>https://github.com/Shubham0205Sharma/HttpResponseBuilder</PackageProjectUrl>
 	  <PackageIcon></PackageIcon>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <IncludeSymbols>False</IncludeSymbols>
