@@ -24,7 +24,7 @@ namespace HttpResponseBuilder.Models
         }
 
         /// <summary>
-        /// Validate success status code and throw exception for failed statuscode
+        /// Validate success status code and throw exception for failed statuscode.
         /// </summary>
         /// <exception cref="FailedResponseException"></exception>
         public void EnsureSuccessStatusCode()
