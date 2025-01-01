@@ -1,8 +1,8 @@
 # HttpResponseBuilder
 
 `HttpResponseBuilder` is a NuGet package designed to standardize API responses in ASP.NET Core applications. 
-This package provides a common response schema, out-of-the-box methods to ensure success status codes, 
-and a helper method to validate and return appropriate status code results from controllers.
+This package provides a common response schema, out-of-the-box methods to ensure success status codes, and a helper method 
+to validate and return appropriate status code results from controllers.
 
 ## Features
 
@@ -143,9 +143,40 @@ public IActionResult CreateItem([FromBody] ItemDto item)
 
 ---
 
-### 4. Add Metadata to Responses
+### 4. Handle Custom Status Code Properties and Direct Status Code Input
 
-You can include additional metadata using the `Metadata` property:
+The `ValidateAndReturn` method now supports scenarios where the status code property has a different name or where the status code is passed directly.
+
+#### Example with Custom Status Code Property:
+
+```csharp
+var response = new CustomResponse
+{
+    IsSuccess = true,
+    Code = 200,
+    Data = "Custom status code property handled."
+};
+
+return ApiResponseBuilder.ValidateAndReturn(response, "Code");
+```
+
+#### Example with Direct Status Code:
+
+```csharp
+var response = new ApiResponse<string>
+{
+    IsSuccess = true,
+    Data = "Direct status code passed.",
+};
+
+return ApiResponseBuilder.ValidateAndReturn(response, 200);
+```
+
+---
+
+### 5. Add Metadata to Responses
+
+You can include additional metadata using the `Metadata` property, which now supports detailed pagination information:
 
 #### Example:
 
@@ -156,8 +187,17 @@ var response = new ApiResponse<object>
     StatusCode = 200,
     Metadata = new MetaData
     {
+        RequestId = Guid.NewGuid().ToString(),
         Timestamp = DateTime.UtcNow,
-        AdditionalInfo = "Processed successfully"
+        Pagination = new PaginationInfo
+        {
+            CurrentPage = 1,
+            PageSize = 10,
+            TotalPages = 5,
+            TotalItems = 50,
+            NextPageUrl = "/api/items?page=2",
+            PreviousPageUrl = null
+        }
     }
 };
 ```
@@ -168,7 +208,7 @@ var response = new ApiResponse<object>
 
 The `HttpResponseBuilder` library includes exceptions for handling specific scenarios:
 
-- **`FailedResponseException`**: Thrown when a response status code is invalid or indicates failure.
+- ``: Thrown when a response status code is invalid or indicates failure.
 
 Example:
 
@@ -205,5 +245,4 @@ We welcome contributions! Please fork this repository, make your changes, and su
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
-
 
